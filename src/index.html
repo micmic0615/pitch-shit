@@ -1,0 +1,147 @@
+<!doctype html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<title>Online Tuner</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+	<canvas class="frequency-bars"></canvas>
+
+	
+	<style>
+		.container {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.staff {
+			width: 100%;
+			height: 240px;
+			border-top: 1px solid #000;
+			border-bottom: 1px solid #000;
+			position: relative;
+			transform: scale(1, 0.75)
+		}
+
+		.staff > .lines {
+			width: 100%;
+			height: 60px;
+			border-top: 1px solid #000;
+			border-bottom: 1px solid #000;
+		}
+
+		#note_container {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			display: flex;
+			justify-content: center;
+		}
+
+		.staff > #note_container > .note {
+			width: 60px;
+			height: 60px;
+			margin: 0px 15px;
+			border-radius: 40px;
+			background-color: #000;
+			position: relative;
+			top: 360px;
+		}
+
+		.staff > #note_container > .note > .strike {
+			height: 2px;
+			width: 100px;
+			background-color: #000;
+			position: absolute;
+			left: -20px;
+		}
+
+		.staff > #note_container > .note > .strike.mid {
+			top: 30px;
+		}
+
+		.staff > #note_container > .note > .strike.top {
+			top: 0px;
+		}
+
+		.staff > #note_container > .note > .strike.bot {
+			top: 60px;
+		}
+
+		#scale_selector {
+			width: 180px;
+			height: 40px;
+			padding: 0px 10px;
+			font-size: 24px;
+			outline: none;
+			position: absolute;
+			top: 10px;
+			left: 10px;
+		}
+
+		#score_container {
+			font-size: 200px;
+			position: absolute;
+			display: block;
+			right: 20px;
+			color: #ddd
+		}
+
+		.correct_bar {
+			width: 540px;
+			height: 5px;
+			background-color: #ddd;
+			position: absolute;
+			top: 740px;
+		}
+
+		#correct_display {
+			width: 100%;
+			height: 100%;
+			background-color: #888;
+		}
+	</style>
+
+	<select id="scale_selector">
+		<option value="" style="display:none"></option>
+		<option value="c_major">C Major</option>
+		<option value="g_major">G Major</option>
+		<option value="d_major">D Major</option>
+		<option value="a_major">A Major</option>
+		<option value="e_major">E Major</option>
+	</select>
+
+	<div class="container">
+		<b id="score_container">0</b>
+		<div class="staff">
+			<div class="lines"></div>
+			<div class="lines"></div>
+			<div class="lines"></div>
+			<div class="lines"></div>
+			<div class="note"></div>
+
+			<div id="note_container">
+				
+			</div>
+		</div>
+
+		<div class="correct_bar">
+			<div id="correct_display"></div>
+		</div>
+	</div>
+	
+
+	<script src="js/aubio.js"></script>
+	<script src="js/tuner.js"></script>
+	<script src="js/frequency-bars.js"></script>
+	<script src="js/pitch.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+html {
+  height: 100%;
+}
+
+body {
+  position: fixed;
+  font-family: sans-serif;
+  color: #2c3e50;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+* {
+  box-sizing: border-box
+}
+
+.frequency-bars {
+  position: absolute;
+  bottom: 0;
+}
