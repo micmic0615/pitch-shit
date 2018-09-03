@@ -26,21 +26,21 @@ const Application = function() {
 		{name: "C", octave: 4, position: 270},
 
 		{name: "D", octave: 4, position: 240},
-		// {name: "E", octave: 4, position: 210},
-		// {name: "F", octave: 4, position: 180},
-		// {name: "G", octave: 4, position: 150},
+		{name: "E", octave: 4, position: 210},
+		{name: "F", octave: 4, position: 180},
+		{name: "G", octave: 4, position: 150},
 
-		// {name: "A", octave: 4, position: 120},
-		// {name: "B", octave: 4, position: 90},
-		// {name: "C", octave: 5, position: 60},
-		// {name: "D", octave: 5, position: 30},
+		{name: "A", octave: 4, position: 120},
+		{name: "B", octave: 4, position: 90},
+		{name: "C", octave: 5, position: 60},
+		{name: "D", octave: 5, position: 30},
 
-		// {name: "E", octave: 5, position: 0},
-		// {name: "F", octave: 5, position: -30},
-		// {name: "G", octave: 5, position: -60},
-		// {name: "A", octave: 5, position: -90},
+		{name: "E", octave: 5, position: 0},
+		{name: "F", octave: 5, position: -30},
+		{name: "G", octave: 5, position: -60},
+		{name: "A", octave: 5, position: -90},
 
-		// {name: "B", octave: 5, position: -120},
+		{name: "B", octave: 5, position: -120},
 
 		// {name: "C", octave: 6, position: -150},
 		// {name: "D", octave: 6, position: -180},
@@ -93,7 +93,7 @@ Application.prototype.drawNote = function(noteItem, index){
 	this.noteContainer.appendChild(noteAppend);
 }
 
-Application.prototype.newNote = function(pattern = "ascending"){
+Application.prototype.newNote = function(pattern = "random"){
 	this.correct = 0;
 	this.correctPositive = 0;
 	this.correctNegative = 0;
@@ -111,9 +111,9 @@ Application.prototype.newNote = function(pattern = "ascending"){
 		this.spawnPattern.loopIndex = Math.round(Math.random()*(this.notesList.length - 4));
 		if (this.spawnPattern.loopIndex > this.notesList.length - 4){this.spawnPattern.loopIndex = this.notesList.length - 4}
 
-		this.spawnPattern.loopIndex = 0
+		// this.spawnPattern.loopIndex = 0
 		
-		while(this.currentNoteBatch.length < 5){
+		while(this.currentNoteBatch.length < 4){
 			let createdNote = this.spawnPattern[pattern](1);
 	
 			let currentSharps = this.scaleList[this.scaleSelector.options[this.scaleSelector.selectedIndex].value];
