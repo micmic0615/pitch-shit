@@ -1,0 +1,29 @@
+add beat and make sure you play on tempo (metronome and time signature)
+try to explore bowing styles (stacatto)
+
+add sharps and flats on the notes
+additional analytics (how many mistakes, correct notes)
+draw the g-clef and sharps
+
+explore additional penalty systems (note skipping, etc)
+explore visual systems (visualize the metronome using a moving line)
+
+option to patunugin the notes before playing
+
+properly divide by measure
+
+add rests
+
+add indicator of upbow and downbow
+
+
+
+
+extra patterns:
+
+all spaces
+all lines
+skipping (mix all spaces and lines)
+octaves (higher note, lower same note, lowest same note)
+alternate high and low (up down up down)
+

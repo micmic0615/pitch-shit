@@ -1,0 +1,35 @@
+tuner option
+warm up scales (doremi)
+
+songs with upbow/downbow
+
+note counts/rests
+
+option to hear the note before playing
+
+option to repeat last played random set
+
+techniques (stacato, vibrato, plucking)
+
+
+
+
+
+
+commercializing 
+
+scoring
+-nakailang palo ka bago mo nahanap (find way to not clutter screen with extra numbers, use color)
+
+-tips
+-guitar style chord builder translates to notes
+
+analytics:
+percent and which notes u fucked up
+if you tend to play sharp or flat per note
+
+-extras
+accompany songs
+
+
+-recording option

@@ -18,12 +18,14 @@ const Application = function() {
 	this.currentNoteIndex = 0;
 
 	this.correctDing = new Audio('assets/sounds/ding.ogg');
+	// this.correctDing.currentTime = 0;
+	
 
 	this.notesList = [
-		{name: "G", octave: 3, position: 360},
-		{name: "A", octave: 3, position: 330},
-		{name: "B", octave: 3, position: 300},
-		{name: "C", octave: 4, position: 270},
+		// {name: "G", octave: 3, position: 360},
+		// {name: "A", octave: 3, position: 330},
+		// {name: "B", octave: 3, position: 300},
+		// {name: "C", octave: 4, position: 270},
 
 		{name: "D", octave: 4, position: 240},
 		{name: "E", octave: 4, position: 210},
