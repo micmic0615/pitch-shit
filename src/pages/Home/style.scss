@@ -1,3 +1,150 @@
-.page_home {
-    
+.container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.staff {
+	width: 100%;
+	height: 240px;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+	position: relative;
+	transform: scale(1, 0.75)
+}
+
+.staff > .lines {
+	width: 100%;
+	height: 60px;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+#note_container {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	display: flex;
+	justify-content: center;
+}
+
+.staff > #note_container > .note {
+	width: 60px;
+	height: 60px;
+	margin: 0px 15px;
+	border-radius: 40px;
+	background-color: #000;
+	position: relative;
+	top: 360px;
+}
+
+.staff > #note_container > .note > .strike {
+	height: 2px;
+	width: 100px;
+	background-color: #000;
+	position: absolute;
+	left: -20px;
+}
+
+.staff > #note_container > .note > .strike.mid {
+	top: 30px;
+}
+
+.staff > #note_container > .note > .strike.top {
+	top: 0px;
+}
+
+.staff > #note_container > .note > .strike.bot {
+	top: 60px;
+}
+
+#mode_selector {
+	width: 180px;
+	height: 40px;
+	padding: 0px 10px;
+	font-size: 24px;
+	outline: none;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#scale_selector {
+	width: 180px;
+	height: 40px;
+	padding: 0px 10px;
+	font-size: 24px;
+	outline: none;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#score_container {
+	font-size: 200px;
+	position: absolute;
+	display: block;
+	right: 20px;
+	color: #aff;
+	margin-top: 0px;
+}
+
+#score_assist_container {
+	font-size: 74px;
+	position: absolute;
+	display: block;
+	right: 20px;
+	color: #fbb;
+	margin-top: -130px;
+}
+
+#score_average_container {
+	font-size: 74px;
+	position: absolute;
+	display: block;
+	right: 20px;
+	color: #aaa;
+	margin-top: 130px;
+}
+
+#correct_display {
+	width: 540px;
+	height: 5px;
+	background-color: #ddd;
+	position: absolute;
+	top: 740px;
+	display: flex;
+	justify-content: center
+}
+
+#correct_bar {
+	width: 100%;
+	height: 100%;
+	background-color: #888;
+}
+
+#note_toastr_container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 48px;
+	width: 120px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: -50px;
+	margin-top: -50px;
+	color: #aaa;
+}
+
+.note_toastr {
+	position: absolute;
+	top: 0px;
+	opacity: 1;
+	transition: 2s all;
 }
