@@ -1,0 +1,143 @@
+html, body {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    position: relative
+}
+
+@font-face {
+    font-family: 'Neuzeit';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/neuzeit-regular.eot'); /* IE9 Compat Modes */
+    src: local('Neuzeit Regular'), local('Neuzeit-Regular'),
+         url('../fonts/neuzeit-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/neuzeit-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/neuzeit-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/neuzeit-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/neuzeit-regular.svg#Neuzeit') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Neuzeit-Heavy';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/NeuzeitSLTStd-BookHeavy.eot'); /* IE9 Compat Modes */
+    src: local('Neuzeit Regular'), local('Neuzeit-Heavy'),
+         url('../fonts/NeuzeitSLTStd-BookHeavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/NeuzeitSLTStd-BookHeavy.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/NeuzeitSLTStd-BookHeavy.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/NeuzeitSLTStd-BookHeavy.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/NeuzeitSLTStd-BookHeavy.svg#NeuzeitHeavy') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Open-Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/OpenSans-Regular.eot'); /* IE9 Compat Modes */
+    src: local('Open-Sans Regular'), local('Open-Sans-Regular'),
+         url('../fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/OpenSans-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/OpenSans-Regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/OpenSans-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/OpenSans-Regular.svg#Open-Sans') format('svg'); /* Legacy iOS */
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Open-Sans', sans-serif;
+}
+
+.f_opensans {
+    font-family: 'Open-Sans', serif;
+    * {
+        font-family: 'Open-Sans', serif;
+    }
+}
+
+.f_neuzeit {
+    font-family: 'Neuzeit', serif;
+    * {
+        font-family: 'Neuzeit', serif;
+    }
+}
+
+.f_neuzeitheavy {
+    font-family: 'Neuzeit', serif;
+    * {
+        font-family: 'Neuzeit', serif;
+    }
+}
+
+img.bg_img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+
+.content_container {
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+}
+
+#root {
+    min-height: 100%;
+
+    > #main_wrapper {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .header, .footer {
+            z-index: 1;
+        }
+
+        #main_container {
+            flex: 1;
+            z-index: 0;
+        
+            .debug_window {
+                position: fixed;
+                width: 260px;
+                top: 75px;
+                z-index: 1001;
+                background-color: rgba(255,125,0,0.65);
+                padding: 10px;
+                opacity: 1;
+                font-size: 14px;
+                font-weight: bold;
+                transition: 0.35s right ease-in-out;
+            }
+        }
+    }
+}
+
+
+
+.grd_purple_100 {
+    background: #660b5a; /* Old browsers */
+    background: -moz-linear-gradient(top, #660b5a 0%, #390951 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #660b5a 0%,#390951 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #660b5a 0%,#390951 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#660b5a', endColorstr='#390951',GradientType=0 ); /* IE6-9 */
+}
+
+.grd_purple_75 {
+    background: #660b5a; /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(102,11,90,0.75) 0%, rgba(57,9,81,0.75) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(102,11,90,0.75) 0%,rgba(57,9,81,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(102,11,90,0.75) 0%,rgba(57,9,81,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf660b5a', endColorstr='#bf390951',GradientType=0 ); /* IE6-9 */
+}
+
+.grd_gold_streak {
+    background: -moz-linear-gradient(left, rgba(246,226,94,0) 0%, rgba(246,226,94,0.02) 1%, rgba(246,226,94,1) 50%, rgba(246,226,94,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(246,226,94,0) 0%,rgba(246,226,94,0.02) 1%,rgba(246,226,94,1) 50%,rgba(246,226,94,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(246,226,94,0) 0%,rgba(246,226,94,0.02) 1%,rgba(246,226,94,1) 50%,rgba(246,226,94,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00f6e25e', endColorstr='#00f6e25e',GradientType=1 ); /* IE6-9 */
+}

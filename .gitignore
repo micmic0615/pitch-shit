@@ -1,5 +1,19 @@
 
 /node_modules/
+/shortcuts/
+/credentials.txt
+/pull.txt
+/push.txt
+/reference
+/build/node_modules/
+/build/src/
+/build/.env
+/build/nohup.out
+/build/debug/
+/build/_old/node_modules/
+/build/package-lock.json
+/assets/
+
 
 npm-debug.log*
 yarn-debug.log*
