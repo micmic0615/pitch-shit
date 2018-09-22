@@ -192,7 +192,7 @@ lodash.imgPath = (base)=>{
 }
 
 lodash.isEmail = (value)=>{
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)){
+    if (/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(value)){
         return (true)
     } else {
         return (false)

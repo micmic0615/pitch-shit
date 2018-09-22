@@ -1,150 +1,163 @@
-.container {
-	width: 100%;
-	height: 100%;
+.page_home {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-}
 
-.staff {
-	width: 100%;
-	height: 240px;
-	border-top: 1px solid #000;
-	border-bottom: 1px solid #000;
-	position: relative;
-	transform: scale(1, 0.75)
-}
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
 
-.staff > .lines {
-	width: 100%;
-	height: 60px;
-	border-top: 1px solid #000;
-	border-bottom: 1px solid #000;
-}
+	> .staff {
+		width: 100%;
+		height: 200px;
+		
+		position: relative;
+		transform: scale(1, 1);
+		overflow: visible;
 
-#note_container {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	display: flex;
-	justify-content: center;
-}
+		> .g_clef {
+			height: 370px;
+			margin-left: 10px;
+			margin-top: -85px;
+			position: absolute;
+			cursor: pointer;
+			z-index: 1;
+			
+			> img {
+				height: 100%;
+			}
+		}
 
-.staff > #note_container > .note {
-	width: 60px;
-	height: 60px;
-	margin: 0px 15px;
-	border-radius: 40px;
-	background-color: #000;
-	position: relative;
-	top: 360px;
-}
+		> .sharps {
+			z-index: 2;
+			font-size: 100px;
+			line-height: 85px;
+			position: absolute;
+			transform: scale(0.75, 1);
+			color: #333;
+			padding-left: 20px;
+			cursor: pointer;
 
-.staff > #note_container > .note > .strike {
-	height: 2px;
-	width: 100px;
-	background-color: #000;
-	position: absolute;
-	left: -20px;
-}
+			> span {
+				position: relative;
+				top: -8px;
+				pointer-events: none;
+			}
+		}
 
-.staff > #note_container > .note > .strike.mid {
-	top: 30px;
-}
+		> .sharps.disabled {
+			opacity: 0.2
+		}
 
-.staff > #note_container > .note > .strike.top {
-	top: 0px;
-}
+		> .lines {
+			width: 100%;
+			height: 50px;
+			border-top: 1px solid rgba(0,0,0,0.65);
+			position: relative;
+		}
 
-.staff > #note_container > .note > .strike.bot {
-	top: 60px;
-}
+		> .lines.last {
+			border-bottom: 1px solid rgba(0,0,0,0.65);
+		}
 
-#mode_selector {
-	width: 180px;
-	height: 40px;
-	padding: 0px 10px;
-	font-size: 24px;
-	outline: none;
-	position: absolute;
-	top: 10px;
-	left: 10px;
-}
+		> .notes {
+			width: 50px;
+			height: 50px;
+			border-radius: 25px;
+			position: absolute;
+			left: 420px;
+			top: -200px;
+			transform: scale(1.2, 1);
+			background-color: #333;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
-#scale_selector {
-	width: 180px;
-	height: 40px;
-	padding: 0px 10px;
-	font-size: 24px;
-	outline: none;
-	position: absolute;
-	top: 10px;
-	left: 10px;
-}
+			> span {
+				z-index: 1;
+				position: relative;
+			}
 
-#score_container {
-	font-size: 200px;
-	position: absolute;
-	display: block;
-	right: 20px;
-	color: #aff;
-	margin-top: 0px;
-}
+			> .strike {
+				height: 1px;
+				width: 74px;
+				background-color: #333;
+				position: absolute;
+				left: -12px;
+				z-index: 0;
+			}
 
-#score_assist_container {
-	font-size: 74px;
-	position: absolute;
-	display: block;
-	right: 20px;
-	color: #fbb;
-	margin-top: -130px;
-}
+			> .strike.mid {
+				top: 25px;
+			}
+	
+			> .strike.top {
+				top: 0px;
+			}
+	
+			> .strike.bot {
+				margin-top: 50px;
+			}
+		}
+	}
 
-#score_average_container {
-	font-size: 74px;
-	position: absolute;
-	display: block;
-	right: 20px;
-	color: #aaa;
-	margin-top: 130px;
-}
+	> .blocker {
+		width: 100%;
+		height: 100%;
+		color: #fff;
+		letter-spacing: 2px;
+		font-size: 14px;
+		font-weight: 100;
+		position: fixed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1;
+		cursor: pointer;
+		background: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.2) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 ); /* IE6-9 */
+	}
 
-#correct_display {
-	width: 540px;
-	height: 5px;
-	background-color: #ddd;
-	position: absolute;
-	top: 740px;
-	display: flex;
-	justify-content: center
-}
+	> .note_checker {
+		position: fixed;
+		bottom: 10px;
+		left: 10px;
+		font-size: 12px;
 
-#correct_bar {
-	width: 100%;
-	height: 100%;
-	background-color: #888;
-}
+		> b {
+			color: #fff;
+			background-color: #333;
+			padding: 3px 10px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			border-radius: 3px;
+			margin-left: 5px;
+			cursor: pointer;
+		}
+	}
 
-#note_toastr_container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	font-size: 48px;
-	width: 120px;
-	height: 50px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-left: -50px;
-	margin-top: -50px;
-	color: #aaa;
-}
+	> .top_menu {
+		position: fixed;
+		top: 10px;
+		right: 10px;
+		display: flex;
 
-.note_toastr {
-	position: absolute;
-	top: 0px;
-	opacity: 1;
-	transition: 2s all;
+		> .button {
+			color: #fff;
+			width: 40px;
+			height: 40px;
+			margin: 0px 2px;
+			border-radius: 3px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #333;
+			cursor: pointer;
+		}
+	}
 }

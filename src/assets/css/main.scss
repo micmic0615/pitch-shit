@@ -86,12 +86,20 @@ img.bg_img {
 }
 
 #root {
-    min-height: 100%;
+    height: 100%;
 
     > #main_wrapper {
         min-height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
+
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cccccc+1,ffffff+25,ffffff+50,ffffff+75,cccccc+100 */
+        background: rgb(204,204,204); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(204,204,204,1) 1%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 75%, rgba(204,204,204,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(204,204,204,1) 1%,rgba(255,255,255,1) 25%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 75%,rgba(204,204,204,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(204,204,204,1) 1%,rgba(255,255,255,1) 25%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 75%,rgba(204,204,204,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 
         .header, .footer {
             z-index: 1;
@@ -100,19 +108,6 @@ img.bg_img {
         #main_container {
             flex: 1;
             z-index: 0;
-        
-            .debug_window {
-                position: fixed;
-                width: 260px;
-                top: 75px;
-                z-index: 1001;
-                background-color: rgba(255,125,0,0.65);
-                padding: 10px;
-                opacity: 1;
-                font-size: 14px;
-                font-weight: bold;
-                transition: 0.35s right ease-in-out;
-            }
         }
     }
 }

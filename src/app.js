@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Route, Redirect, Switch, Link } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
+// import { Route, Redirect, Switch, Link } from 'react-router-dom';
 import asyncRoute from 'Assets/scripts/asyncRoute';
 import noteListener from 'Assets/scripts/noteListener';
 import RouteList from "Src/routeList.js";
@@ -72,20 +73,7 @@ class PageFrame extends Component {
 	render() {
 		return (<div id="main_wrapper">
 			<Header {...this.props} />
-			<div id="main_container">
-				<div className="debug_window" style={{right: this.props.state.debugWindow ? "10px" : "-300px"}}>
-					<ul>
-						{(() => {
-							return RouteList.map((name) => {
-								let linkName = name[1] == "/my-favorites" ? "My Favorites" : name[0]
-								return <li key={"link_" + name[1]}><Link to={name[1]}>{_.isString(linkName) ? linkName.replace(":custom:", "").replace(":common:", "") : linkName.component}</Link></li>
-							})
-						})()}
-					</ul>
-				</div>
-				
-				{this.props.children}
-			</div>
+			{this.props.children}
 			<Footer {...this.props} />
 		</div>)
 	}
