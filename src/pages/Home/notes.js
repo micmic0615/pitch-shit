@@ -1,29 +1,31 @@
-export const generateNote = function(count = 1){
-    let render_notes_list = [...this.state.render_notes_list];
-    let render_notes_all = this.state.render_notes_all.filter(p=>(p.active == true));
-
-    while(count > 0){
-        let random_seed = Math.floor(Math.random()*(render_notes_all.length));
-        if (random_seed == render_notes_all.length){random_seed = render_notes_all.length - 1};
-    
-        if (!_.isNil(this.previous_note)){
-            while(random_seed == this.previous_note){
-                random_seed = Math.floor(Math.random()*(render_notes_all.length));
-                if (random_seed == render_notes_all.length){random_seed = render_notes_all.length - 1};
+export const generateNote = function(count = 0, callback){
+    let notes_list = [...this.state.notes_list];
+    let notes_pool = this.state.notes_pool.filter(p=>(p.active == true));
+    if (notes_pool.length > 1){
+        while(count > 0){
+            let random_seed = Math.floor(Math.random()*(notes_pool.length));
+            if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
+        
+            if (!_.isNil(this.previous_note)){
+                while(random_seed == this.previous_note){
+                    random_seed = Math.floor(Math.random()*(notes_pool.length));
+                    if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
+                }
             }
+    
+            this.previous_note = random_seed;
+            notes_list.push( notes_pool[random_seed] )
+            count--
         }
-
-        this.previous_note = random_seed;
-        render_notes_list.push( render_notes_all[random_seed] )
-        count--
     }
    
-    this.setState({render_notes_list});
+    this.setState({notes_list}, ()=>{
+        if (!_.isNil(callback) && _.isFunction(callback)){callback()}
+    });
 }
 
 export const validateNote = function(note){
-    if (note.frequency > 190 && note.frequency < 1500){
-    
+    if (note.frequency > 190 && note.frequency < 1600){
         let valid_note = false;
         switch(this.state.noise_filter){
             case "frequency":

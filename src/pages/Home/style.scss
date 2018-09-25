@@ -62,44 +62,142 @@
 			border-bottom: 1px solid rgba(0,0,0,0.65);
 		}
 
-		> .notes {
-			width: 50px;
-			height: 50px;
-			border-radius: 25px;
-			position: absolute;
-			left: 420px;
-			top: -200px;
-			transform: scale(1.2, 1);
-			background-color: #333;
-			color: #fff;
+		> .notes_container {
+			position: absolute; 
+			width: 990px;
+			margin-left: -445px;
+			height: 100%;
+			left: 50%;
+			top: 0px;
 			display: flex;
-			align-items: center;
-			justify-content: center;
+			border-left: 1px solid #333;
 
-			> span {
-				z-index: 1;
+			> .measure {
+				width: 330px;
+				height: 100%;
+				border-right: 1px solid #333;
 				position: relative;
-			}
 
-			> .strike {
-				height: 1px;
-				width: 74px;
-				background-color: #333;
-				position: absolute;
-				left: -12px;
-				z-index: 0;
-			}
+				> .disabler {
+					width: 100%;
+					height: 100%;
+					background: rgba(0,0,0,0.1);
+					position: absolute;
+				}
 
-			> .strike.mid {
-				top: 25px;
+				> .notes {
+					width: 50px;
+					height: 50px;
+					border-radius: 25px;
+					position: absolute;
+					top: -200px;
+					transform: scale(1.2, 1);
+					background-color: #333;
+					color: #fff;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+		
+					> span {
+						z-index: 1;
+						position: relative;
+					}
+		
+					> .strike {
+						height: 1px;
+						width: 74px;
+						background-color: #333;
+						position: absolute;
+						left: -12px;
+						z-index: 0;
+					}
+		
+					> .strike.mid {
+						top: 25px;
+					}
+			
+					> .strike.top {
+						top: 0px;
+					}
+			
+					> .strike.bot {
+						margin-top: 50px;
+					}
+
+					> .assist {
+						display: none;
+						position: absolute,
+
+					}
+
+					> .accuracy {
+						font-size: 10px;
+					}
+				}
+
+				> .notes.correct {
+					background: #fc3 !important;
+					box-shadow: 0px 0px 6px #fc3 !important;
+					animation: notes_correct 0.1s infinite;
+				}
+
+				> .notes.higher, > .notes.lower {
+					> .assist {
+						display: block;
+					}
+				}
+
+				> .notes.higher {
+					> .assist {
+						display: block;
+						top: -35px;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 10px 15px 10px;
+						border-color: transparent transparent #ff0000 transparent;
+						animation: notes_higher 1s infinite;
+					}
+				}
+
+				> .notes.lower {
+					> .assist {
+						display: block;
+						top: 70px;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 15px 10px 0 10px;
+						border-color: #ff0000 transparent transparent transparent;
+						animation: notes_lower 1s infinite;
+					}
+				}
+
+				@keyframes notes_correct {
+					0% {transform: scale(1.2, 1.0);}
+					50% {transform: scale(1.25, 1.05);}
+					100% {transform: scale(1.2, 1.0);}
+				}
+
+				@keyframes notes_higher {
+					0% {top: -35px;}
+					50% {top: -55px;}
+					100% {top: -35px;}
+				}
+
+				@keyframes notes_lower {
+					0% {top: 70px;}
+					50% {top: 90px;}
+					100% {top: 70px;}
+				}
 			}
-	
-			> .strike.top {
-				top: 0px;
-			}
-	
-			> .strike.bot {
-				margin-top: 50px;
+		}
+
+		> .notes_container.edit {
+			width: 1200px;
+			margin-left: -550px;
+			> .measure {
+				width: 100%;
 			}
 		}
 	}
@@ -121,6 +219,45 @@
 		background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* Chrome10-25,Safari5.1-6 */
 		background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 ); /* IE6-9 */
+
+		> .congrats {
+			width: 320px;
+			> table {
+				width:100%;
+
+				> tbody {
+					> .title {
+						text-align: center;
+						font-size: 16px;
+						
+						td {
+							padding-bottom: 20px;
+						}
+					}
+		
+					> .data {
+						font-size: 12px;
+						> .label {
+							text-align:left;
+						}
+						
+						> .value {
+							text-align:right;
+						}
+					}
+	
+					> .footnote {
+						text-align: center;
+						font-size: 12px;
+						
+						td {
+							padding-top: 40px;
+						}
+					}
+				}
+			}
+			
+		}
 	}
 
 	> .note_checker {
@@ -158,6 +295,68 @@
 			align-items: center;
 			background-color: #333;
 			cursor: pointer;
+		}
+	}
+
+	> .score_display {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+		color: #333;
+
+		> .score_value {
+			font-size: 38px;
+			font-weight: 100;
+			letter-spacing: 2px;
+		}
+
+		> .combo_value {
+			font-size: 24px;
+			font-weight: 100;
+			letter-spacing: 2px;
+		}
+	}
+
+	> .progress_bar {
+		width: 840px;
+		height: 5px;
+		background-color: #ccc;
+		position: absolute;
+		bottom: 80px;
+		left: 50%;
+		margin-left: -420px;
+
+		> .progress_meter {
+			height: 100%;
+			animation: progress_flash 2s infinite;
+		}
+
+		> input {
+			position: absolute;
+			height: 70px;
+			width: 100%;
+			text-align: center;
+			outline: none;
+			font-size: 36px;
+			top: -75px;
+			padding: 5px 10px;
+			border: none;
+			background: transparent;
+		}
+
+		@keyframes progress_flash {
+			0% {
+				background-color: #feb;
+				box-shadow: 0px 0px 5px #fc9;
+			}
+			50% {
+				background-color: #ffc;
+				box-shadow: 0px 0px 10px #fc9;
+			}
+			100% {
+				background-color: #feb;
+				box-shadow: 0px 0px 5px #fc9;
+			}
 		}
 	}
 }
