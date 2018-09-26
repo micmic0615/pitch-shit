@@ -11,6 +11,8 @@ models.forEach((model_path)=>{
     global.DB[model_name] = require(model_path)
 });
 
+console.log(__dirname)
+
 const mongoose = require('mongoose');
 mongoose.connect("mongodb://"+process.env.DB_USERNAME+":"+process.env.DB_PASSWORD+"@"+process.env.DB_HOST+":"+process.env.DB_PORT+"/"+process.env.DB_NAME);
 
