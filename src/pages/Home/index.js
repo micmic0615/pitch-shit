@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
 import NoteList from 'Constants/noteList.js';
 import ScaleList from 'Constants/scaleList.js';
-import { generateNote, validateNote } from './notes';
+import { generateNote, validateNote, readNote, getPrecisionBase } from './notes';
 
 import { faMusic, faPlay, faPause, faMarker } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,8 +15,10 @@ class Home extends Component {
 		super(props);
 
 		this.setStateAndSave = setStateAndSave.bind(this);
+		this.getPrecisionBase = getPrecisionBase.bind(this);
 		this.generateNote = generateNote.bind(this);
 		this.validateNote = validateNote.bind(this);
+		this.readNote = readNote.bind(this);
 
 		let state_object = getStateFromLocalStorage({
 			key_signature_value: 0,
@@ -55,6 +57,8 @@ class Home extends Component {
 			mistake_max: 25,
 			mistake_padding: 4,
 			mistake_padding_max: 4,
+
+			precision_base: null,
 			
 			rating: [],
 		}
@@ -155,112 +159,6 @@ class Home extends Component {
 				this.setStateAndSave({
 					progress_required: parseInt(value)
 				})
-			}
-		}
-	}
-
-	readNote = (note)=>{
-		let sharps_list = ScaleList[this.state.key_signature_name];
-		let required_note = this.state.notes_list[this.state.notes_index];
-		let required_name = required_note.name;
-		let required_perfect = required_note.perfect[0];
-		
-		if (sharps_list.includes(required_name)){
-			required_perfect = required_note.perfect[1];
-			switch(required_name){
-				case "E": required_name = "F"; break;
-				case "B": required_name = "C"; break;
-				default: required_name += "♯"; break;
-			}
-		}
-
-		let frequency_difference = Math.abs(required_perfect - note.frequency);
-		
-		if (note.name == required_name && frequency_difference < 15){
-			this.note_current.correct += 1;
-			this.note_current.rating.push(frequency_difference);
-
-			if (this.note_current.correct >= this.note_current.correct_max){
-				
-				
-				let correct_ratio = (this.note_current.correct / (this.note_current.mistake + this.note_current.correct))*70;
-				let perfect_ratio = ((15 - (this.note_current.rating.reduce((a, b) => a + b, 0) / this.note_current.rating.length)) / 15)*30;
-				let note_percent = correct_ratio + perfect_ratio;
-				let note_score = this.state.notes_index_count ? Math.round(((note_percent)*10000) / this.state.progress_required) : 0;
-
-				let notes_list = _.jsonClone([...this.state.notes_list])
-				notes_list[this.state.notes_index].accuracy = Math.round(correct_ratio*100/70);
-				notes_list[this.state.notes_index].precision = Math.round(perfect_ratio*100/30)
-
-				let incremented_index = this.state.notes_index + 1;
-				let notes_index_start = this.state.notes_index_start
-				if (incremented_index >= this.state.notes_index_start + this.state.notes_index_range){
-					notes_index_start = this.state.notes_index_start + this.state.notes_index_range
-				}
-
-				let progress_current = Math.min(this.state.progress_current + 1, this.state.progress_required);
-
-				let running = this.state.running;
-				
-				this.sounds.ding.currentTime = 0
-				this.sounds.ding.play()
-				if (progress_current == this.state.progress_required){
-					incremented_index = incremented_index - 1;
-					running = 3;
-
-					this.sounds.dingding.currentTime = 0
-					this.sounds.dingding.play()
-				}
-
-				let combo = this.state.notes_index_count ? this.state.combo + 1 : 0;
-				if (combo >= this.combo_max){this.combo_max = combo}
-
-				this.setState({
-					notes_index: incremented_index, 
-					score: Math.min(this.state.score + note_score, 1000000),
-					notes_index_count: true,
-					notes_index_assist: "",
-					notes_index_start,
-					progress_current,
-					running,
-					combo,
-					notes_list,
-				}, ()=>{
-					this.note_current.correct = 0;
-					this.note_current.mistake = 0;
-					this.note_current.rating = [];
-					this.note_current.mistake_padding = this.note_current.mistake_padding_max;
-					
-				})
-			} else {
-				if (!this.state.notes_index_count){
-					this.setState({
-						notes_index_assist: "correct",
-					});
-				}
-			}
-		} else {
-			if (this.note_current.mistake_padding <= 0){
-				this.note_current.mistake += 1;
-				if (this.note_current.mistake >= this.note_current.mistake_max && this.state.notes_index_count){
-					this.sounds.dong.currentTime = 0
-					this.sounds.dong.play()
-					this.setState({
-						notes_index_count: false,
-						combo: 0,
-						errors: this.state.errors + 1
-					});
-				} else {
-					this.note_current.correct = 0;
-				}
-
-				if (!this.state.notes_index_count){
-					this.setState({
-						notes_index_assist: required_perfect > note.frequency ? "higher" : "lower",
-					});
-				}
-			} else {
-				this.note_current.mistake_padding -= 1;
 			}
 		}
 	}

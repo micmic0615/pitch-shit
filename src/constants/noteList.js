@@ -29,7 +29,6 @@ let note_list = [
 ]
 
 let return_list = note_list.reverse().map((note, index)=>{
-   
     return {...note, position: index*25, active: true}
 })
 
