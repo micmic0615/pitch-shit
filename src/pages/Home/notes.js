@@ -1,4 +1,4 @@
-import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
+// import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
 import NoteList from 'Constants/noteList.js';
 import ScaleList from 'Constants/scaleList.js';
 
@@ -17,14 +17,35 @@ export const getPrecisionBase = function(note, is_sharp){
     hertz_list.forEach((hertz, index)=>{
         if (base_frequency == hertz){
             if (index > 0){
-                prev_frequency = hertz_list[index - 1]
+                if (prev_frequency == base_frequency){
+                    let recompute_hertz = hertz_list[index + 2];
+                    if (_.isNil(recompute_hertz)){
+                        prev_frequency = base_frequency;
+                        divider -= 1;
+                    } else {
+                        prev_frequency = hertz_list[index - 2];
+                    }
+                    
+                } else {
+                    prev_frequency = hertz_list[index - 1];
+                }
             } else {
                 prev_frequency = base_frequency;
                 divider -= 1;
             }
 
             if (index < hertz_list.length - 1){
-                next_frequency = hertz_list[index + 1]
+                if (next_frequency == base_frequency){
+                    let recompute_hertz = hertz_list[index + 2];
+                    if (_.isNil(recompute_hertz)){
+                        next_frequency = base_frequency;
+                        divider -= 1;
+                    } else {
+                        next_frequency = hertz_list[index + 2];
+                    }
+                } else {
+                    next_frequency = hertz_list[index + 1];
+                }
             } else {
                 next_frequency = base_frequency;
                 divider -= 1;
@@ -34,8 +55,9 @@ export const getPrecisionBase = function(note, is_sharp){
 
     let next_difference = Math.abs(base_frequency - next_frequency);
     let prev_difference = Math.abs(base_frequency - prev_frequency);
-
-    return (next_difference + prev_difference) / divider;
+    
+    let return_value = (next_difference + prev_difference) / (divider*1.5);
+    return return_value
 }
 
 export const generateNote = function(count = 0, callback){
@@ -126,7 +148,7 @@ export const validateNote = function(note){
 
         if (valid_note){
             this.note_test = [];
-            this.note_target.push(note[this.state.noise_filter])
+            this.note_target.push(note[this.state.noise_filter]);
             this.readNote(note)
         }
     }
@@ -189,13 +211,13 @@ export const readNote = function(note){
 }
 
 const onCorrect = function(note){
-    let accuracy_factor = 70;
-    let precision_factor = 30;
+    let accuracy_factor = 50;
+    let precision_factor = 50;
 
-    let rating_factor = 60;
-    let combo_factor = 40;
+    let rating_factor = 70;
+    let combo_factor = 30;
 
-    let combo_base_score = 1/((this.state.progress_required + 1)*(this.state.progress_required/2))
+    let combo_base_score = 1000/((this.state.progress_required + 1)*(this.state.progress_required/2));
 
     let combo = this.state.notes_index_count ? this.state.combo + 1 : 0;
     if (combo >= this.combo_max){this.combo_max = combo}
@@ -208,8 +230,9 @@ const onCorrect = function(note){
     let note_score = this.state.notes_index_count ? note_rating : 0;
 
     let notes_list = _.jsonClone([...this.state.notes_list])
-    notes_list[this.state.notes_index].accuracy = Math.round(correct_ratio*100/accuracy_factor);
-    notes_list[this.state.notes_index].precision = Math.round(perfect_ratio*100/precision_factor)
+    notes_list[this.state.notes_index].accuracy = this.state.notes_index_count ? Math.round(correct_ratio*100/accuracy_factor) : 0;
+    notes_list[this.state.notes_index].precision = Math.round(perfect_ratio*100/precision_factor);
+ 
 
     let incremented_index = this.state.notes_index + 1;
     let notes_index_start = this.state.notes_index_start

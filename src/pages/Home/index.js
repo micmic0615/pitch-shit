@@ -27,6 +27,9 @@ class Home extends Component {
 			notes_pool: [...NoteList],
 			progress_required: 50,
 		});
+		
+		state_object.key_signature_value = parseInt(state_object.key_signature_value, 10);
+		state_object.progress_required = parseInt(state_object.progress_required, 10);
 
 		state_object.running = 0;
 		state_object.notes_edit = false;
@@ -155,9 +158,9 @@ class Home extends Component {
 	changeRequired = (e)=>{
 		if (this.state.notes_edit){
 			let value = e.target.value;
-			if (_.isFinite(parseInt(value))){
+			if (_.isFinite(parseInt(value, 10))){
 				this.setStateAndSave({
-					progress_required: parseInt(value)
+					progress_required: parseInt(value, 10)
 				})
 			}
 		}
@@ -207,6 +210,8 @@ class Home extends Component {
 			note_color = this.state.notes_index_count == true ? "#0dd" : "#f00";
 		}
 
+		if (!_.isNil(note.accuracy) && note.accuracy == 0){note_color = "#f99"}
+
 		return <div 
 			key={real_index + "_map_notes_list"}
 			className={note_being_read ? ("notes " + this.state.notes_index_assist) : "notes"} 
@@ -221,7 +226,7 @@ class Home extends Component {
 			}}
 		>
 			<div className="assist"></div>
-			<div className="accuracy">{_.isNil(note.accuracy) ? "" : note.accuracy}</div>
+			<div className="accuracy">{(_.isNil(note.accuracy) || note.accuracy == 0) ? "" : note.accuracy}</div>
 			{!this.state.notes_edit ?  null : <span>{note_name}</span>}
 			{(()=>{
 				let strikes = [];
@@ -235,7 +240,9 @@ class Home extends Component {
 				}
 
 				while(note_position <= 150){
-					strikes.push(<div className="strike bot" key={real_index +"_" +note_position} style={{top: (top_adjust*1) + "px", backgroundColor: note_color}}></div>);
+					if ((top_adjust*1) < 50){
+						strikes.push(<div className="strike bot" key={real_index +"_" +note_position} style={{top: (top_adjust*1) + "px", backgroundColor: note_color}}></div>);
+					}					
 					top_adjust += 50;
 					note_position += 50;
 				}
