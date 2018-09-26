@@ -222,8 +222,10 @@ const onCorrect = function(note){
     let combo = this.state.notes_index_count ? this.state.combo + 1 : 0;
     if (combo >= this.combo_max){this.combo_max = combo}
 
+    let adjusted_precision_base = this.note_current.precision_base/2;
+
     let correct_ratio = (this.note_current.correct / (this.note_current.mistake + this.note_current.correct))*accuracy_factor;
-    let perfect_ratio = ((this.note_current.precision_base - (this.note_current.rating.reduce((a, b) => a + b, 0) / this.note_current.rating.length)) / this.note_current.precision_base)*precision_factor;
+    let perfect_ratio = ((adjusted_precision_base - (this.note_current.rating.reduce((a, b) => a + b, 0) / this.note_current.rating.length)) / adjusted_precision_base)*precision_factor;
     let note_percent = correct_ratio + perfect_ratio;
 
     let note_rating = Math.round((((note_percent*rating_factor) + (combo*combo_base_score*combo_factor))*100) / this.state.progress_required);
@@ -231,7 +233,7 @@ const onCorrect = function(note){
 
     let notes_list = _.jsonClone([...this.state.notes_list])
     notes_list[this.state.notes_index].accuracy = this.state.notes_index_count ? Math.round(correct_ratio*100/accuracy_factor) : 0;
-    notes_list[this.state.notes_index].precision = Math.round(perfect_ratio*100/precision_factor);
+    notes_list[this.state.notes_index].precision = this.state.notes_index_count ? Math.round(perfect_ratio*100/precision_factor) : 0;
  
 
     let incremented_index = this.state.notes_index + 1;

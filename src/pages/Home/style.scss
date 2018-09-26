@@ -360,3 +360,54 @@
 		}
 	}
 }
+
+@media only screen and  (max-width: 1640px) {
+	.page_home {
+		> .staff {
+			width: 125%;
+			transform: scale(0.8, 0.8);
+			position: fixed;
+			left: -12.5%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 1340px) {
+	.page_home {
+		> .staff {
+			width: 166%;
+			transform: scale(0.6, 0.6);
+			left: -33%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 940px) {
+	.page_home {
+		> .staff {
+			width: 200%;
+			transform: scale(0.5, 0.5);
+			left: -50%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 780px) {
+	.page_home {
+		> .staff {
+			width: 250%;
+			transform: scale(0.4, 0.4);
+			left: -75%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 640px) {
+	.page_home {
+		> .staff {
+			width: 330%;
+			transform: scale(0.3, 0.3);
+			left: -115%;
+		}
+	}
+} 

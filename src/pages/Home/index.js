@@ -264,7 +264,8 @@ class Home extends Component {
 						this.state.notes_list.forEach((note)=>{accuracy += note.accuracy / this.state.notes_list.length});
 
 						let precision = 0;
-						this.state.notes_list.forEach((note)=>{precision += note.precision / this.state.notes_list.length});
+						let precision_list = this.state.notes_list.filter((note)=>{return note.precision > 0});
+						precision_list.forEach((note)=>{precision += note.precision / precision_list.length});
 						
 						return <div className="congrats" >
 							<table>
