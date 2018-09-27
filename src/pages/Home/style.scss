@@ -138,7 +138,6 @@
 				> .notes.correct {
 					background: #fc3 !important;
 					box-shadow: 0px 0px 6px #fc3 !important;
-					animation: notes_correct 0.1s infinite;
 				}
 
 				> .notes.higher, > .notes.lower {
@@ -173,9 +172,13 @@
 					}
 				}
 
-				@keyframes notes_correct {
+				> .notes.listening {
+					animation: notes_listening 0.1s infinite;
+				}
+
+				@keyframes notes_listening {
 					0% {transform: scale(1.2, 1.0);}
-					50% {transform: scale(1.25, 1.05);}
+					50% {transform: scale(1.31, 1.1);}
 					100% {transform: scale(1.2, 1.0);}
 				}
 

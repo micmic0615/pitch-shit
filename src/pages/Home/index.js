@@ -42,22 +42,20 @@ class Home extends Component {
 		state_object.errors = 0;
 		state_object.combo = 0;
 		state_object.progress_current = 0;
+		state_object.notes_index_assist = "";
+
+		state_object.render_listening = false;
 
 		this.state = {...state_object}
 
 		this.clock = 0;
-		let increment_clock = ()=>{
-			if (this.state.running == 1){this.clock += 0.1}
-		}
-
-		setInterval(increment_clock, 100)
 
 		this.note_current = {
 			correct: 0,
-			correct_max: 15,
+			correct_max: 10,
 			
 			mistake: 0,
-			mistake_max: 25,
+			mistake_max: 10,
 			mistake_padding: 4,
 			mistake_padding_max: 4,
 
@@ -73,9 +71,29 @@ class Home extends Component {
 			"dong": new Audio(_.imgPath("./img/dong.ogg")),
 			"dingding": new Audio(_.imgPath("./img/dingding.ogg")),
 		}
+
+		this.is_listening = 0;
 	}
 
 	componentDidMount = ()=>{
+		setInterval(()=>{
+			// increment clock
+			if (this.state.running == 1){this.clock += 0.01}
+		
+			// check listening
+			if (this.is_listening > 0){
+				this.is_listening -= 1;
+				if (this.state.render_listening == false){
+					this.setState({render_listening: true})
+				}
+			} else {
+				this.is_listening = 0;
+				if (this.state.render_listening == true){
+					this.setState({render_listening: false})
+				}
+			}
+		},10)
+
 		this.generateNote(this.state.progress_required)
 	}
 
@@ -211,10 +229,10 @@ class Home extends Component {
 		}
 
 		if (!_.isNil(note.accuracy) && note.accuracy == 0){note_color = "#f99"}
-
+		
 		return <div 
 			key={real_index + "_map_notes_list"}
-			className={note_being_read ? ("notes " + this.state.notes_index_assist) : "notes"} 
+			className={note_being_read ? ("notes " + (this.state.render_listening ? ("listening " + this.state.notes_index_assist) : "")) : "notes"} 
 			onClick={()=>{this.editModeToggleNote(real_index)}}
 			style={{
 				marginTop:note.position + "px", 

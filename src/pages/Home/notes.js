@@ -155,6 +155,8 @@ export const validateNote = function(note){
 }
 
 export const readNote = function(note){
+    this.is_listening = 10;
+
     let sharps_list = ScaleList[this.state.key_signature_name];
     let required_note = this.state.notes_list[this.state.notes_index];
     let required_name = required_note.name;
@@ -172,6 +174,7 @@ export const readNote = function(note){
     }
 
     let frequency_difference = Math.abs(required_perfect - note.frequency);
+  
 
     if (_.isNil(this.note_current.precision_base)){
         this.note_current.precision_base = this.getPrecisionBase(required_note, is_sharp)
@@ -208,6 +211,8 @@ export const readNote = function(note){
             this.note_current.mistake_padding -= 1;
         }
     }
+
+   
 }
 
 const onCorrect = function(note){
