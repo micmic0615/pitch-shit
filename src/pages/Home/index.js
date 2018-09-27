@@ -332,7 +332,6 @@ class Home extends Component {
 				<div onClick={()=>{this.setKeySignature(5, "b_major")}} className={"sharps " + (this.state.key_signature_value < 5 ? "disabled" : "")} style={{marginTop: "80px", marginLeft: "200px"}}  ><span>♯</span></div>
 				<div onClick={()=>{this.setKeySignature(6, "f♯_major")}} className={"sharps " + (this.state.key_signature_value < 6 ? "disabled" : "")} style={{marginTop: "-15px", marginLeft: "225px"}}  ><span>♯</span></div>
 				<div onClick={()=>{this.setKeySignature(7, "c♯_major")}} className={"sharps " + (this.state.key_signature_value < 7 ? "disabled" : "")} style={{marginTop: "60px", marginLeft: "250px"}}  ><span>♯</span></div>
-			
 
 				<div className="lines"></div>
 				<div className="lines"></div>
@@ -382,7 +381,6 @@ class Home extends Component {
 					return <Fragment><span style={{color: this.state.combo >= this.combo_max ? "#39c" : "#c66"}}>{string_combo}</span>{ " [" + this.combo_max + "]"}</Fragment>;
 				})()}</div>
 			</div>
-
 
 			<div className="progress_bar" style={{display: this.state.running == 1 ? "block" : "none"}}>
 				<input type="text" style={{display: this.state.notes_edit ? "block" : "none"}} value={this.state.progress_required} onChange={this.changeRequired}/>

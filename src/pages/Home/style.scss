@@ -318,13 +318,13 @@
 	}
 
 	> .progress_bar {
-		width: 840px;
+		width: 740px;
 		height: 5px;
 		background-color: #ccc;
 		position: absolute;
 		bottom: 80px;
 		left: 50%;
-		margin-left: -420px;
+		margin-left: -370px;
 
 		> .progress_meter {
 			height: 100%;
@@ -392,12 +392,19 @@
 	}
 } 
 
-@media only screen and  (max-width: 780px) {
+@media only screen and  (max-width: 750px) {
 	.page_home {
 		> .staff {
 			width: 250%;
 			transform: scale(0.4, 0.4);
 			left: -75%;
+		}
+
+		> .progress_bar {
+			width: 80%;
+			height: 3px;
+			left: 10%;
+			margin-left: 0px;
 		}
 	}
 } 
