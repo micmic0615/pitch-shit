@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
 import NoteList from 'Constants/noteList.js';
 import ScaleList from 'Constants/scaleList.js';
-import { generateNote, validateNote, readNote, getPrecisionBase } from './notes';
+import NotesSetup  from './notes';
 
 import { faMusic, faPlay, faPause, faMarker } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,11 +14,9 @@ class Home extends Component {
 	constructor(props){
 		super(props);
 
+		NotesSetup.bind(this)();
+
 		this.setStateAndSave = setStateAndSave.bind(this);
-		this.getPrecisionBase = getPrecisionBase.bind(this);
-		this.generateNote = generateNote.bind(this);
-		this.validateNote = validateNote.bind(this);
-		this.readNote = readNote.bind(this);
 
 		let state_object = getStateFromLocalStorage({
 			key_signature_value: 0,
@@ -60,11 +58,12 @@ class Home extends Component {
 			mistake_padding_max: 4,
 
 			precision_base: null,
-			
-			rating: [],
 		}
 
-		this.combo_max = 0;
+		this.combo = {
+			max: 0,
+			rating: 0,
+		};
 
 		this.sounds = {
 			"ding": new Audio(_.imgPath("./img/ding.ogg")),
@@ -99,7 +98,7 @@ class Home extends Component {
 
 	componentWillReceiveProps = (props)=>{
 		if (this.state.notes_edit != true && this.state.running == 1 && !_.isEqual(this.props.note, props.note)){
-			this.validateNote(props.note)
+			this.validateNote(props.note, this.onCorrect, this.onMistake)
 		}
 	}
 
@@ -159,7 +158,7 @@ class Home extends Component {
 				this.setState({notes_list: []}, ()=>{
 					this.generateNote(this.state.progress_required, ()=>{
 						this.clock = 0;
-						this.combo_max = 0;
+						this.combo.max = 0;
 						this.setState({
 							notes_index: 0, 								
 							progress_current: 0,
@@ -184,13 +183,102 @@ class Home extends Component {
 		}
 	}
 
+	onCorrect = (note)=>{
+		let accuracy_factor = 50;
+		let precision_factor = 50;
+	
+		let rating_factor = 70;
+		let combo_factor = 30;
+	
+		let combo_base_score = 1000/((this.state.progress_required + 1)*(this.state.progress_required/2));
+	
+		let combo = this.state.notes_index_count ? this.state.combo + 1 : 0;
+		if (combo >= this.combo.max){this.combo.max = combo}
+	
+		let adjusted_precision_base = this.note_current.precision_base/2;
+	
+		let correct_ratio = (this.note_current.correct / (this.note_current.mistake + this.note_current.correct))*accuracy_factor;
+		let perfect_ratio = ((adjusted_precision_base - (this.note_current.rating.reduce((a, b) => a + b, 0) / this.note_current.rating.length)) / adjusted_precision_base)*precision_factor;
+		let note_percent = correct_ratio + perfect_ratio;
+	
+		let note_rating = Math.round((((note_percent*rating_factor) + (combo*combo_base_score*combo_factor))*100) / this.state.progress_required);
+		let note_score = this.state.notes_index_count ? note_rating : 0;
+	
+		let notes_list = _.jsonClone([...this.state.notes_list])
+		notes_list[this.state.notes_index].accuracy = this.state.notes_index_count ? Math.round(correct_ratio*100/accuracy_factor) : 0;
+		notes_list[this.state.notes_index].precision = this.state.notes_index_count ? Math.round(perfect_ratio*100/precision_factor) : 0;
+	
+		let incremented_index = this.state.notes_index + 1;
+		let notes_index_start = this.state.notes_index_start
+		if (incremented_index >= this.state.notes_index_start + this.state.notes_index_range){
+			notes_index_start = this.state.notes_index_start + this.state.notes_index_range
+		}
+	
+		let progress_current = Math.min(this.state.progress_current + 1, this.state.progress_required);
+	
+		let running = this.state.running;
+		
+		this.sounds.ding.currentTime = 0
+		this.sounds.ding.play()
+		if (progress_current == this.state.progress_required){
+			incremented_index = incremented_index - 1;
+			running = 3;
+	
+			this.sounds.dingding.currentTime = 0
+			this.sounds.dingding.play()
+		}
+	
+		this.setState({
+			notes_index: incremented_index, 
+			score: Math.min(this.state.score + note_score, 1000000),
+			notes_index_count: true,
+			notes_index_assist: "",
+			notes_index_start,
+			progress_current,
+			running,
+			combo,
+			notes_list,
+		}, ()=>{
+			this.note_current.correct = 0;
+			this.note_current.mistake = 0;
+			this.note_current.rating = [];
+			this.note_current.precision_base = null;
+			this.note_current.mistake_padding = this.note_current.mistake_padding_max;
+		})
+	}
+	
+	onMistake = (note)=>{
+		this.sounds.dong.currentTime = 0
+		this.sounds.dong.play()
+		this.setState({
+			notes_index_count: false,
+			combo: 0,
+			errors: this.state.errors + 1
+		});
+	}
+
+	renderSharps = ()=>{
+		let key_value = 1;
+		let return_sharps = [];
+		let scale_list = Object.keys(ScaleList)
+		while(key_value <= 7){
+			let top = ["-45px","30px","-65px","10px","80px","-15px","60px"];
+			return_sharps.push(<div key={key_value + "_sharp"} onClick={()=>{this.setKeySignature(key_value, scale_list[key_value - 1])}} className={"sharps " + (this.state.key_signature_value < key_value ? "disabled" : "")} style={{marginTop: top[key_value - 1], marginLeft: String(75 + (25*key_value)) + "px"}}  ><span>♯</span></div>)
+			value ++;
+		}
+
+		return <Fragment>
+			<div className="g_clef" onClick={()=>{this.setKeySignature(0, "c_major")}}><img src={_.imgPath("./img/g_clef.svg")} alt=""/></div>
+			{return_sharps}
+		</Fragment>
+	}
+
 	renderMeasure = (start, end)=>{
 		let sliced_list = this.state.notes_list.slice(this.state.notes_index_start + start, this.state.notes_index_start + end);
-		if (!_.isEmptyArray(sliced_list)){
-			return sliced_list.map((note, index)=>{return this.renderNotes(note, index, start)})
-		} else {
-			return <div className="disabler"></div>
-		}
+		let return_measure = <div className="disabler"></div>;
+		if (!_.isEmptyArray(sliced_list)){return_measure = sliced_list.map((note, index)=>{return this.renderNotes(note, index, start)})};
+
+		return <div className="measure">{return_measure}</div>
 	}
 
 	renderNotes = (note, index, index_edit = 0)=>{
@@ -285,7 +373,7 @@ class Home extends Component {
 						let precision_list = this.state.notes_list.filter((note)=>{return note.precision > 0});
 						precision_list.forEach((note)=>{precision += note.precision / precision_list.length});
 						
-						return <div className="congrats" >
+						return <div className="congrats">
 							<table>
 								<tbody>
 									<tr className="title">
@@ -304,7 +392,7 @@ class Home extends Component {
 
 									<tr className="data">
 										<td className="label">Max Combo:</td>
-										<td className="value">{this.combo_max}</td>
+										<td className="value">{this.combo.max}</td>
 									</tr>									
 
 									<tr className="data">
@@ -336,20 +424,10 @@ class Home extends Component {
 		</div>
 	}
 
-	
-
 	render() {
 		return (<div id="main_container" className="page_home">
 			<div className="staff">
-				<div className="g_clef" onClick={()=>{this.setKeySignature(0, "c_major")}}><img src={_.imgPath("./img/g_clef.svg")} alt=""/></div>
-				
-				<div onClick={()=>{this.setKeySignature(1, "g_major")}} className={"sharps " + (this.state.key_signature_value < 1 ? "disabled" : "")} style={{marginTop: "-45px", marginLeft: "100px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(2, "d_major")}} className={"sharps " + (this.state.key_signature_value < 2 ? "disabled" : "")} style={{marginTop: "30px", marginLeft: "125px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(3, "a_major")}} className={"sharps " + (this.state.key_signature_value < 3 ? "disabled" : "")} style={{marginTop: "-65px", marginLeft: "150px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(4, "e_major")}} className={"sharps " + (this.state.key_signature_value < 4 ? "disabled" : "")} style={{marginTop: "10px", marginLeft: "175px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(5, "b_major")}} className={"sharps " + (this.state.key_signature_value < 5 ? "disabled" : "")} style={{marginTop: "80px", marginLeft: "200px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(6, "f♯_major")}} className={"sharps " + (this.state.key_signature_value < 6 ? "disabled" : "")} style={{marginTop: "-15px", marginLeft: "225px"}}  ><span>♯</span></div>
-				<div onClick={()=>{this.setKeySignature(7, "c♯_major")}} className={"sharps " + (this.state.key_signature_value < 7 ? "disabled" : "")} style={{marginTop: "60px", marginLeft: "250px"}}  ><span>♯</span></div>
+				{this.renderSharps()}
 
 				<div className="lines"></div>
 				<div className="lines"></div>
@@ -357,12 +435,11 @@ class Home extends Component {
 				<div className="lines last"></div>
 				{this.state.notes_list.length < 1 ? null : <div className={"notes_container " + (this.state.notes_edit ? "edit" : "")}>
 					{this.state.notes_edit ? <div className="measure">{this.state.notes_list.map((note, index)=>{return this.renderNotes(note, index)})}</div> : <Fragment>
-						<div className="measure">{this.renderMeasure(0,4)}</div>
-						<div className="measure">{this.renderMeasure(4,8)}</div>
-						<div className="measure">{this.renderMeasure(8,12)}</div>
+						{this.renderMeasure(0,4)}
+						{this.renderMeasure(4,8)}
+						{this.renderMeasure(8,12)}
 					</Fragment>}
 				</div>}
-				
 			</div>
 
 			{this.renderPauseMenu()}
@@ -396,7 +473,7 @@ class Home extends Component {
 					let string_combo = String(this.state.combo)
 					while (string_combo.length < String(this.state.progress_required).length){string_combo = "0" + string_combo}
 
-					return <Fragment><span style={{color: this.state.combo >= this.combo_max ? "#39c" : "#c66"}}>{string_combo}</span>{ " [" + this.combo_max + "]"}</Fragment>;
+					return <Fragment><span style={{color: this.state.combo >= this.combo.max ? "#39c" : "#c66"}}>{string_combo}</span>{ " [" + this.combo.max + "]"}</Fragment>;
 				})()}</div>
 			</div>
 

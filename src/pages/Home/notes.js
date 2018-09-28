@@ -86,7 +86,7 @@ export const generateNote = function(count = 0, callback){
     });
 }
 
-export const validateNote = function(note){
+export const validateNote = function(note, onCorrect, onMistake){
     if (note.frequency > 190 && note.frequency < 1600){
         let valid_note = false;
         switch(this.state.noise_filter){
@@ -149,12 +149,12 @@ export const validateNote = function(note){
         if (valid_note){
             this.note_test = [];
             this.note_target.push(note[this.state.noise_filter]);
-            this.readNote(note)
+            this.readNote(note, onCorrect, onMistake)
         }
     }
 }
 
-export const readNote = function(note){
+export const readNote = function(note, onCorrect, onMistake){
     this.is_listening = 10;
 
     let sharps_list = ScaleList[this.state.key_signature_name];
@@ -174,7 +174,6 @@ export const readNote = function(note){
     }
 
     let frequency_difference = Math.abs(required_perfect - note.frequency);
-  
 
     if (_.isNil(this.note_current.precision_base)){
         this.note_current.precision_base = this.getPrecisionBase(required_note, is_sharp)
@@ -185,7 +184,7 @@ export const readNote = function(note){
         this.note_current.rating.push(frequency_difference);
 
         if (this.note_current.correct >= this.note_current.correct_max){  
-            onCorrect.bind(this)(note);
+            onCorrect(note);
         } else {
             if (!this.state.notes_index_count){
                 this.setState({
@@ -197,7 +196,7 @@ export const readNote = function(note){
         if (this.note_current.mistake_padding <= 0){
             this.note_current.mistake += 1;
             if (this.note_current.mistake >= this.note_current.mistake_max && this.state.notes_index_count){
-                onMistake.bind(this)(note)
+                onMistake(note)
             } else {
                 this.note_current.correct = 0;
             }
@@ -211,81 +210,20 @@ export const readNote = function(note){
             this.note_current.mistake_padding -= 1;
         }
     }
-
-   
 }
 
-const onCorrect = function(note){
-    let accuracy_factor = 50;
-    let precision_factor = 50;
+const DefaultExport =  function(){
+    this.getPrecisionBase = getPrecisionBase.bind(this);
+    this.generateNote = generateNote.bind(this);
+    this.validateNote = validateNote.bind(this);
+    this.readNote = readNote.bind(this);
 
-    let rating_factor = 70;
-    let combo_factor = 30;
-
-    let combo_base_score = 1000/((this.state.progress_required + 1)*(this.state.progress_required/2));
-
-    let combo = this.state.notes_index_count ? this.state.combo + 1 : 0;
-    if (combo >= this.combo_max){this.combo_max = combo}
-
-    let adjusted_precision_base = this.note_current.precision_base/2;
-
-    let correct_ratio = (this.note_current.correct / (this.note_current.mistake + this.note_current.correct))*accuracy_factor;
-    let perfect_ratio = ((adjusted_precision_base - (this.note_current.rating.reduce((a, b) => a + b, 0) / this.note_current.rating.length)) / adjusted_precision_base)*precision_factor;
-    let note_percent = correct_ratio + perfect_ratio;
-
-    let note_rating = Math.round((((note_percent*rating_factor) + (combo*combo_base_score*combo_factor))*100) / this.state.progress_required);
-    let note_score = this.state.notes_index_count ? note_rating : 0;
-
-    let notes_list = _.jsonClone([...this.state.notes_list])
-    notes_list[this.state.notes_index].accuracy = this.state.notes_index_count ? Math.round(correct_ratio*100/accuracy_factor) : 0;
-    notes_list[this.state.notes_index].precision = this.state.notes_index_count ? Math.round(perfect_ratio*100/precision_factor) : 0;
- 
-
-    let incremented_index = this.state.notes_index + 1;
-    let notes_index_start = this.state.notes_index_start
-    if (incremented_index >= this.state.notes_index_start + this.state.notes_index_range){
-        notes_index_start = this.state.notes_index_start + this.state.notes_index_range
+    return {
+        getPrecisionBase,
+        generateNote,
+        validateNote,
+        readNote,
     }
-
-    let progress_current = Math.min(this.state.progress_current + 1, this.state.progress_required);
-
-    let running = this.state.running;
-    
-    this.sounds.ding.currentTime = 0
-    this.sounds.ding.play()
-    if (progress_current == this.state.progress_required){
-        incremented_index = incremented_index - 1;
-        running = 3;
-
-        this.sounds.dingding.currentTime = 0
-        this.sounds.dingding.play()
-    }
-
-    this.setState({
-        notes_index: incremented_index, 
-        score: Math.min(this.state.score + note_score, 1000000),
-        notes_index_count: true,
-        notes_index_assist: "",
-        notes_index_start,
-        progress_current,
-        running,
-        combo,
-        notes_list,
-    }, ()=>{
-        this.note_current.correct = 0;
-        this.note_current.mistake = 0;
-        this.note_current.rating = [];
-        this.note_current.precision_base = null;
-        this.note_current.mistake_padding = this.note_current.mistake_padding_max;
-    })
 }
 
-const onMistake = function(note){
-    this.sounds.dong.currentTime = 0
-    this.sounds.dong.play()
-    this.setState({
-        notes_index_count: false,
-        combo: 0,
-        errors: this.state.errors + 1
-    });
-}
+export default DefaultExport
