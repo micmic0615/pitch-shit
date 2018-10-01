@@ -12,6 +12,7 @@ export function getStateFromLocalStorage(state){
     let return_state = {};
     Object.keys(state).forEach((key)=>{
         let local_storage_value = localStorage.getItem(process.env.LOCALSTORAGE_KEY + "_" + key) || JSON.parse(localStorage.getItem(process.env.LOCALSTORAGE_KEY + "_" + key + "_json"))
+
         return_state[key] = local_storage_value || state[key]
     })
 

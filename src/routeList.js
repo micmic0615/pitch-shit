@@ -1,5 +1,6 @@
 let routeList = [
-	["Home", "/"]
+	["Home", "/"],
+	["Finger", "/finger"]
 ];
 
 export default routeList

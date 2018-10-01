@@ -264,7 +264,7 @@ class Home extends Component {
 		while(key_value <= 7){
 			let top = ["-45px","30px","-65px","10px","80px","-15px","60px"];
 			return_sharps.push(<div key={key_value + "_sharp"} onClick={()=>{this.setKeySignature(key_value, scale_list[key_value - 1])}} className={"sharps " + (this.state.key_signature_value < key_value ? "disabled" : "")} style={{marginTop: top[key_value - 1], marginLeft: String(75 + (25*key_value)) + "px"}}  ><span>♯</span></div>)
-			value ++;
+			key_value ++;
 		}
 
 		return <Fragment>
