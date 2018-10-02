@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
 
 import './style.scss';
-import { arch } from 'os';
 
 class Finger extends Component {
 	constructor(props){
@@ -40,6 +39,9 @@ class Finger extends Component {
 		state_obj.key_valid = true;
 		state_obj.key_timer = 6;
 		state_obj.score = 0;
+		state_obj.average = [];
+
+		this.start_session = false;
 
 		this.state = state_obj
 	}
@@ -49,12 +51,25 @@ class Finger extends Component {
 		this.populateKeys()
 
 		this.timeout = setInterval(()=>{
-			let key_timer = this.state.key_timer - 1;
-			let key_valid = this.state.key_valid;
-			let score = this.state.score;
-			if (key_timer <= 0){key_valid = false; score = 0}
-
-			this.setState({key_timer, key_valid, score})
+			if (this.start_session){
+				let key_timer = this.state.key_timer - 1;
+				let key_valid = this.state.key_valid;
+				let score = this.state.score;
+				let record_score = this.state.score
+				let did_mistake = false;
+				if (key_timer <= 0){
+					key_valid = false; 
+					score = 0;					
+					did_mistake = true;
+				}
+	
+				this.setState({key_timer, key_valid, score}, ()=>{
+					if (did_mistake){
+						this.onMistake(record_score)
+					}
+				})
+			}
+			
 		}, 100)
 	}
 
@@ -104,6 +119,15 @@ class Finger extends Component {
 		return <div className="row" style={{opacity: opacity}}>{return_array}</div>;
 	}
 
+	onMistake = (record_score)=>{
+		if (this.start_session){
+			let average = [...this.state.average];
+			average.push(record_score);
+			this.setState({average: average});
+			this.start_session = false;
+		}
+	}
+
 	onKeyPressed = (e)=>{
 	
 		let all_keys = Object.keys(this.key_all);
@@ -114,7 +138,9 @@ class Finger extends Component {
 			let key_value = this.key_all[all_keys.find(p=>(p.substring(1) == key_string))]
 			
 			if (!_.isEmptyArray(this.state.key_sequence)){
+				
 				if (key_value == this.state.key_sequence[0]){
+					this.start_session = true;
 					let state_obj = {};
 
 					if (this.state.key_valid == true){
@@ -135,7 +161,10 @@ class Finger extends Component {
 						}
 					})
 				} else if (this.state.key_valid == true){
-					this.setState({key_valid: false, score: 0})
+					let record_score = this.state.score
+					this.setState({key_valid: false, score: 0}, ()=>{
+						this.onMistake(record_score)
+					})
 				}
 			}
 		}
@@ -143,12 +172,37 @@ class Finger extends Component {
 
 	render() {
 	
-		return (<div id="main_container" className="page_finger" >
+		return (<div id="main_container" className="finger_dexterity" >
 			<div className="key_interface">
+				<div className="divider" style={{left: "0%", borderLeft:"none"}}></div>
+				<div className="divider" style={{left: "25%"}}></div>
+				<div className="divider" style={{left: "50%"}}></div>
+				<div className="divider" style={{left: "75%"}}></div>
+
+				<div className="fader">
+
+				</div>
+
+				<div className="score_display f_neuzeit">
+					<div className="score_average">{(()=>{
+						if (!_.isEmptyArray(this.state.average)){
+							let average_number = Math.round(((this.state.average.reduce((a, b) => a + b, 0)) / this.state.average.length)*100)/100;
+
+							let whole_number = Math.floor(average_number);
+							let decimal_number = String(Math.round((average_number - whole_number)*100));
+							while(decimal_number.length < 2){decimal_number += "0"}
+							return String(whole_number) + "." + String(decimal_number)
+						} else {
+							return "0.00"
+						}
+					})()}</div>
+					<div className="score_value">{(()=>{return String(this.state.score) + " / " + String(this.state.max)})()}</div>					
+				</div>
+
 				<div className="next_container">
-					{this.renderKey(3, 0.125)}
-					{this.renderKey(2, 0.25)}
-					{this.renderKey(1, 0.5)}
+					{this.renderKey(3, 1)}
+					{this.renderKey(2, 1)}
+					{this.renderKey(1, 1)}
 					{this.renderKey(0, 1)}
 				</div>
 
@@ -189,9 +243,7 @@ class Finger extends Component {
 				</div>
 			</div>
 
-			<div className="score_display f_neuzeit">
-				<div className="score_value">{(()=>{return String(this.state.score) + " / " + String(this.state.max)})()}</div>
-			</div>
+			
 		</div>)
 	}
 }

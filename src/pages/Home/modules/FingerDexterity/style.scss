@@ -1,4 +1,4 @@
-.page_finger {
+.finger_dexterity {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -13,6 +13,28 @@
 	> .key_interface {
 		width: 480px;
 		height: 380px;
+		position: relative;
+
+		> .divider {
+			width: 25%;
+			height: calc(100% - 30px);
+			position: absolute;
+			border-left: 1px solid #ccc;
+			bottom: 30px
+		}
+
+		> .fader {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 1;
+
+			/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100 */
+			background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+		}
 
 		> .next_container {
 			width: 100%;
@@ -49,6 +71,7 @@
 			width: 100%;
 			height: 60px;
 			display: flex;
+			z-index: 2;
 			
 	
 			.button {
@@ -93,24 +116,27 @@
 				background-color: #ccc;
 			}
 		}
-	}
 
-	> .score_display {
-		position: fixed;
-		top: 10px;
-		left: 10px;
-		color: #333;
+		> .score_display {
+			position: absolute;
+			top: 5px;
+			left: 0px;
+			width: 100%;
+			text-align: center;
+			color: #333;
+			z-index: 2;
+	
+			> .score_value {
+				font-size: 16px;
+				font-weight: 100;
+				letter-spacing: 2px;
+			}
 
-		> .score_value {
-			font-size: 38px;
-			font-weight: 100;
-			letter-spacing: 2px;
-		}
-
-		> .combo_value {
-			font-size: 24px;
-			font-weight: 100;
-			letter-spacing: 2px;
+			> .score_average {
+				font-size: 28px;
+				font-weight: 100;
+				letter-spacing: 2px;
+			}
 		}
 	}
 } 

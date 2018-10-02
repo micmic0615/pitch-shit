@@ -1,0 +1,405 @@
+.finger_placement {
+	display: flex;
+	align-items: center;
+
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
+
+	> .staff {
+		width: 100%;
+		height: 200px;
+		
+		position: relative;
+		transform: scale(1, 1);
+		overflow: visible;
+
+		> .g_clef {
+			height: 370px;
+			margin-left: 10px;
+			margin-top: -85px;
+			position: absolute;
+			cursor: pointer;
+			z-index: 1;
+			
+			> img {
+				height: 100%;
+			}
+		}
+
+		> .sharps {
+			z-index: 2;
+			font-size: 100px;
+			line-height: 85px;
+			position: absolute;
+			transform: scale(0.75, 1);
+			color: #333;
+			padding-left: 20px;
+			cursor: pointer;
+
+			> span {
+				position: relative;
+				top: -8px;
+				pointer-events: none;
+			}
+		}
+
+		> .sharps.disabled {
+			opacity: 0.2
+		}
+
+		> .lines {
+			width: 100%;
+			height: 50px;
+			border-top: 1px solid rgba(0,0,0,0.65);
+			position: relative;
+		}
+
+		> .lines.last {
+			border-bottom: 1px solid rgba(0,0,0,0.65);
+		}
+
+		> .notes_container {
+			position: absolute; 
+			width: 990px;
+			margin-left: -445px;
+			height: 100%;
+			left: 50%;
+			top: 0px;
+			display: flex;
+			border-left: 1px solid #333;
+
+			> .measure {
+				width: 330px;
+				height: 100%;
+				border-right: 1px solid #333;
+				position: relative;
+
+				> .disabler {
+					width: 100%;
+					height: 100%;
+					background: rgba(0,0,0,0.1);
+					position: absolute;
+				}
+
+				> .notes {
+					width: 50px;
+					height: 50px;
+					border-radius: 25px;
+					position: absolute;
+					top: -200px;
+					transform: scale(1.2, 1);
+					background-color: #333;
+					color: #fff;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+		
+					> span {
+						z-index: 1;
+						position: relative;
+					}
+		
+					> .strike {
+						height: 1px;
+						width: 74px;
+						background-color: #333;
+						position: absolute;
+						left: -12px;
+						z-index: 0;
+					}
+		
+					> .strike.mid {
+						top: 25px;
+					}
+			
+					> .strike.top {
+						top: 0px;
+					}
+			
+					> .strike.bot {
+						margin-top: 50px;
+					}
+
+					> .assist {
+						display: none;
+						position: absolute,
+
+					}
+
+					> .accuracy {
+						font-size: 10px;
+					}
+				}
+
+				> .notes.correct {
+					background: #fc3 !important;
+					box-shadow: 0px 0px 6px #fc3 !important;
+				}
+
+				> .notes.higher, > .notes.lower {
+					> .assist {
+						display: block;
+					}
+				}
+
+				> .notes.higher {
+					> .assist {
+						display: block;
+						top: -35px;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 10px 15px 10px;
+						border-color: transparent transparent #ff0000 transparent;
+						animation: notes_higher 1s infinite;
+					}
+				}
+
+				> .notes.lower {
+					> .assist {
+						display: block;
+						top: 70px;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 15px 10px 0 10px;
+						border-color: #ff0000 transparent transparent transparent;
+						animation: notes_lower 1s infinite;
+					}
+				}
+
+				> .notes.listening {
+					animation: notes_listening 0.1s infinite;
+				}
+
+				@keyframes notes_listening {
+					0% {transform: scale(1.2, 1.0);}
+					50% {transform: scale(1.31, 1.1);}
+					100% {transform: scale(1.2, 1.0);}
+				}
+
+				@keyframes notes_higher {
+					0% {top: -35px;}
+					50% {top: -55px;}
+					100% {top: -35px;}
+				}
+
+				@keyframes notes_lower {
+					0% {top: 70px;}
+					50% {top: 90px;}
+					100% {top: 70px;}
+				}
+			}
+		}
+
+		> .notes_container.edit {
+			width: 1200px;
+			margin-left: -550px;
+			> .measure {
+				width: 100%;
+			}
+		}
+	}
+
+	> .blocker {
+		width: 100%;
+		height: 100%;
+		color: #fff;
+		letter-spacing: 2px;
+		font-size: 14px;
+		font-weight: 100;
+		position: fixed;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1;
+		cursor: pointer;
+		background: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.2) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.8) 50%,rgba(0,0,0,0.2) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 ); /* IE6-9 */
+
+		> .congrats {
+			width: 320px;
+			> table {
+				width:100%;
+
+				> tbody {
+					> .title {
+						text-align: center;
+						font-size: 16px;
+						
+						td {
+							padding-bottom: 20px;
+						}
+					}
+		
+					> .data {
+						font-size: 12px;
+						> .label {
+							text-align:left;
+						}
+						
+						> .value {
+							text-align:right;
+						}
+					}
+	
+					> .footnote {
+						text-align: center;
+						font-size: 12px;
+						
+						td {
+							padding-top: 40px;
+						}
+					}
+				}
+			}
+			
+		}
+	}
+
+	> .note_checker {
+		position: fixed;
+		bottom: 10px;
+		left: 10px;
+		font-size: 12px;
+
+		> b {
+			color: #fff;
+			background-color: #333;
+			padding: 3px 10px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			border-radius: 3px;
+			margin-left: 5px;
+			cursor: pointer;
+		}
+	}
+
+	
+
+	> .score_display {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+		color: #333;
+
+		> .score_value {
+			font-size: 38px;
+			font-weight: 100;
+			letter-spacing: 2px;
+		}
+
+		> .combo_value {
+			font-size: 24px;
+			font-weight: 100;
+			letter-spacing: 2px;
+		}
+	}
+
+	> .progress_bar {
+		width: 740px;
+		height: 5px;
+		background-color: #ccc;
+		position: absolute;
+		bottom: 80px;
+		left: 50%;
+		margin-left: -370px;
+
+		> .progress_meter {
+			height: 100%;
+			animation: progress_flash 2s infinite;
+		}
+
+		> input {
+			position: absolute;
+			height: 70px;
+			width: 100%;
+			text-align: center;
+			outline: none;
+			font-size: 36px;
+			top: -75px;
+			padding: 5px 10px;
+			border: none;
+			background: transparent;
+		}
+
+		@keyframes progress_flash {
+			0% {
+				background-color: #feb;
+				box-shadow: 0px 0px 5px #fc9;
+			}
+			50% {
+				background-color: #ffc;
+				box-shadow: 0px 0px 10px #fc9;
+			}
+			100% {
+				background-color: #feb;
+				box-shadow: 0px 0px 5px #fc9;
+			}
+		}
+	}
+}
+
+@media only screen and  (max-width: 1640px) {
+	.finger_placement {
+		> .staff {
+			width: 125%;
+			transform: scale(0.8, 0.8);
+			position: fixed;
+			left: -12.5%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 1340px) {
+	.finger_placement {
+		> .staff {
+			width: 166%;
+			transform: scale(0.6, 0.6);
+			left: -33%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 940px) {
+	.finger_placement {
+		> .staff {
+			width: 200%;
+			transform: scale(0.5, 0.5);
+			left: -50%;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 750px) {
+	.finger_placement {
+		> .staff {
+			width: 250%;
+			transform: scale(0.4, 0.4);
+			left: -75%;
+		}
+
+		> .progress_bar {
+			width: 80%;
+			height: 3px;
+			left: 10%;
+			margin-left: 0px;
+		}
+	}
+} 
+
+@media only screen and  (max-width: 640px) {
+	.finger_placement {
+		> .staff {
+			width: 330%;
+			transform: scale(0.3, 0.3);
+			left: -115%;
+		}
+	}
+} 

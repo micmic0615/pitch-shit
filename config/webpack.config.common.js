@@ -116,6 +116,7 @@ module.exports = {
 		alias: {
 			"Src": path.resolve(__dirname, "../src/"),
 			"Pages": path.resolve(__dirname, "../src/pages/"),
+			"Home": path.resolve(__dirname, "../src/pages/Home/"),
 			"Partials": path.resolve(__dirname, "../src/partials/"),
 			"Actions": path.resolve(__dirname, "../src/actions/"),
 			"Reducers": path.resolve(__dirname, "../src/reducers/"),
