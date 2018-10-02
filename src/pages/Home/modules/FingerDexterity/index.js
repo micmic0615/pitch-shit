@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { setStateAndSave, getStateFromLocalStorage } from 'Assets/scripts/localStorage';
 
 import './style.scss';
@@ -177,10 +177,31 @@ class Finger extends Component {
 	
 		return (<div id="main_container" className="finger_dexterity" >
 			<div className="key_interface">
-				<div className="divider" style={{left: "0%", borderLeft:"none"}}></div>
-				<div className="divider" style={{left: "25%"}}></div>
-				<div className="divider" style={{left: "50%"}}></div>
-				<div className="divider" style={{left: "75%"}}></div>
+				{(()=>{
+					let current_key = !_.isEmptyArray(this.state.key_sequence) ? this.state.key_sequence[0] : null;
+					let div_class = ["", "", "", ""];
+
+					switch(current_key){
+						case 0:
+						case 1: div_class[0] = "active"; break;
+
+						case 2:
+						case 3: div_class[1] = "active"; break;
+
+						case 4:
+						case 5: div_class[2] = "active"; break;
+
+						case 6:
+						case 7: div_class[3] = "active"; break;
+					}
+					return <Fragment>
+						<div className={"divider " + div_class[0]} style={{left: "0%", borderLeft:"none"}}></div>
+						<div className={"divider " + div_class[1]} style={{left: "25%"}}></div>
+						<div className={"divider " + div_class[2]} style={{left: "50%"}}></div>
+						<div className={"divider " + div_class[3]} style={{left: "75%"}}></div>
+					</Fragment>
+				})()}
+				
 
 				<div className="fader">
 
