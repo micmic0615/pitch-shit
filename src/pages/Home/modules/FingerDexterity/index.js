@@ -121,9 +121,12 @@ class Finger extends Component {
 
 	onMistake = (record_score)=>{
 		if (this.start_session){
-			let average = [...this.state.average];
-			average.push(record_score);
-			this.setState({average: average});
+			if (record_score > 0){
+				let average = [...this.state.average];
+				average.splice(0, 0, record_score);
+				this.setState({average: average.slice(0, 20)});
+			}
+			
 			this.start_session = false;
 		}
 	}
@@ -190,7 +193,7 @@ class Finger extends Component {
 
 							let whole_number = Math.floor(average_number);
 							let decimal_number = String(Math.round((average_number - whole_number)*100));
-							while(decimal_number.length < 2){decimal_number += "0"}
+							while(decimal_number.length < 2){decimal_number = "0" + decimal_number}
 							return String(whole_number) + "." + String(decimal_number)
 						} else {
 							return "0.00"
