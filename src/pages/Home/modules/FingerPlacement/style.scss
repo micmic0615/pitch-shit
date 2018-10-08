@@ -30,6 +30,19 @@
 			}
 		}
 
+		> .sharp_flat {
+			z-index: 3;
+			font-size: 48px;
+			color: #333;
+			position: absolute;
+			top: -140px;
+			left: 110px;
+
+			> span {
+				cursor: pointer
+			}
+		}
+
 		> .sharps {
 			z-index: 2;
 			font-size: 100px;

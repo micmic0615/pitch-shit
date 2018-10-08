@@ -9,7 +9,7 @@ class Home extends Component {
 		super(props)
 
 		this.state = {
-			module: ""
+			module: FingerPlacement
 		}
 	}
 
@@ -27,20 +27,21 @@ class Home extends Component {
 		let module_to_load = "";
 		switch (location.hash){
 			case "#finger_dexterity":
-				module_to_load = <FingerDexterity {...this.props} />;
+				module_to_load = FingerDexterity;
 				break;
 
 			default: 
-				module_to_load = <FingerPlacement {...this.props} />;
+				module_to_load = FingerPlacement;
 				break;
 		}
+
 
 		this.setState({module: module_to_load})
 	}
 
 	render(){
 		return <Fragment>
-			{this.state.module}
+			{_.isNil(this.state.module) ? null : <this.state.module {...this.props} />}
 			<div className="bottom_menu">
 				<a href="#" className="button">
 					Finger Placement

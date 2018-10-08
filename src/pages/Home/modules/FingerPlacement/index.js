@@ -259,16 +259,29 @@ class FingerPlacement extends Component {
 
 	renderSharps = ()=>{
 		let key_value = 1;
+		let key_limit = 7;
+		let key_icon = "♯";
+		let key_top = ["-45px","30px","-65px","10px","80px","-15px","60px","45px","-40px","60px","-5px",];
 		let return_sharps = [];
-		let scale_list = Object.keys(ScaleList)
-		while(key_value <= 7){
-			let top = ["-45px","30px","-65px","10px","80px","-15px","60px"];
-			return_sharps.push(<div key={key_value + "_sharp"} onClick={()=>{this.setKeySignature(key_value, scale_list[key_value - 1])}} className={"sharps " + (this.state.key_signature_value < key_value ? "disabled" : "")} style={{marginTop: top[key_value - 1], marginLeft: String(75 + (25*key_value)) + "px"}}  ><span>♯</span></div>)
+		let scale_list = Object.keys(ScaleList);
+
+		if (this.state.key_signature_value >= 8){
+			key_value = 8;
+			key_limit = 11;
+			key_icon = "♭"
+		} 
+
+		while(key_value <= key_limit){
+			let click_value = key_value;
+			let key_left = key_value >= 8 ?  25*(key_value - 6) : 25*key_value;
+			return_sharps.push(<div key={key_value + "_sharp"} onClick={()=>{this.setKeySignature(click_value, scale_list[click_value])}} className={"sharps " + (this.state.key_signature_value < key_value ? "disabled" : "")} style={{marginTop: key_top[key_value - 1], marginLeft: String(75 + (key_left)) + "px"}}  ><span>{key_icon}</span></div>)
 			key_value ++;
 		}
+		
 
 		return <Fragment>
 			<div className="g_clef" onClick={()=>{this.setKeySignature(0, "c_major")}}><img src={_.imgPath("./img/g_clef.svg")} alt=""/></div>
+			<div className="sharp_flat"><span  onClick={()=>{this.setKeySignature(1, "g_major")}}>♯</span>/<span  onClick={()=>{this.setKeySignature(8, "f_major")}}>♭</span></div>
 			{return_sharps}
 		</Fragment>
 	}
@@ -304,10 +317,19 @@ class FingerPlacement extends Component {
 		let note_name = note.name;
 
 		if (sharp_list.includes(note_name)){
-			switch(note_name){
-				case "E": note_name = "F"; break;
-				case "B": note_name = "C"; break;
-				default: note_name += "♯"; break;
+			if (this.state.key_signature_name <= 7){
+				switch(note_name){
+					case "E": note_name = "F"; break;
+					case "B": note_name = "C"; break;
+					default: note_name += "♯"; break;
+				}
+			} else {
+				switch(note_name){
+					case "B": note_name = "A♯"; break;
+					case "E": note_name = "D♯"; break;
+					case "A": note_name = "G♯"; break;
+					case "D": note_name = "C♯"; break;
+				}
 			}
 		}
 
@@ -333,7 +355,8 @@ class FingerPlacement extends Component {
 		>
 			<div className="assist"></div>
 			<div className="accuracy">{(_.isNil(note.accuracy) || note.accuracy == 0) ? "" : note.accuracy}</div>
-			{!this.state.notes_edit ?  null : <span>{note_name}</span>}
+			{(_.isNil(note.accuracy) || note.accuracy == 0) ?  <span>{note_name}</span> : null}
+			{/* <span>{note_name}</span> */}
 			{(()=>{
 				let strikes = [];
 				let note_position = (note.position % 50 != 0) ? ( note.position + 25) : note.position;

@@ -166,10 +166,19 @@ export const readNote = function(note, onCorrect, onMistake){
     
     if (is_sharp){
         required_perfect = required_note.perfect[1];
-        switch(required_name){
-            case "E": required_name = "F"; break;
-            case "B": required_name = "C"; break;
-            default: required_name += "♯"; break;
+        if (this.state.key_signature_name <= 7){
+            switch(required_name){
+                case "E": required_name = "F"; break;
+                case "B": required_name = "C"; break;
+                default: required_name += "♯"; break;
+            }
+        } else {
+            switch(required_name){
+                case "B": required_name = "A♯"; break;
+                case "E": required_name = "D♯"; break;
+                case "A": required_name = "G♯"; break;
+                case "D": required_name = "C♯"; break;
+            }
         }
     }
 

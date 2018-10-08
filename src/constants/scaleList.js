@@ -7,5 +7,8 @@ export default {
     "b_major": ["F", "C", "G", "D", "A"],
     "f♯_major": ["F", "C", "G", "D", "A", "E"],
     "c♯_major": ["F", "C", "G", "D", "A", "E", "B"],
+    "f_major": ["B"],
+    "b♭_major": ["B", "E"],
+    "e♭_major": ["B", "E", "A"],
+    "a♭_major": ["B", "E", "A", "D"]
 }
-   
