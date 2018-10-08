@@ -37,8 +37,8 @@ const getPublicUrl = appPackageJson =>
 function getServedPath(appPackageJson) {
   const publicUrl = getPublicUrl(appPackageJson);
   const servedUrl =  envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : "/" + process.env.ASSET_PATH);
-
-  return ensureSlash(servedUrl, true);
+  let return_serve = String(ensureSlash(servedUrl, true)).replace("/undefined", "");
+  return return_serve;
 }
 
 // config after eject: we're in ./config/

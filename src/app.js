@@ -11,8 +11,7 @@ import Header from "Partials/Header";
 import Footer from "Partials/Footer";
 
 import LoadingIcon from 'Elements/LoadingIcon';
-import ErrorPage from 'Pages/Error';
-
+import ErrorPage from 'Pages/Error'; 
 
 let asyncPages = {};
 RouteList.forEach((name) => {

@@ -6,8 +6,6 @@ import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import store, { history } from './store';
 
-
-
 import App from './app.js'
 
 import 'Assets/css/main.scss';
