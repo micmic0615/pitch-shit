@@ -1,10 +1,12 @@
-export function setStateAndSave(state){
+export function setStateAndSave(state, callback){
     this.setState(state, ()=>{
         Object.keys(state).forEach((key)=>{
             let save_value = (_.isArray(state[key]) || _.isObject(state[key])) ? JSON.stringify(state[key]) : state[key];
             let save_suffix =  (_.isArray(state[key]) || _.isObject(state[key])) ? "_json" : "";
             localStorage.setItem(process.env.LOCALSTORAGE_KEY + "_" + key + save_suffix, save_value)
         })
+
+        if (!_.isNil(callback)){callback()}
     })
 }
 

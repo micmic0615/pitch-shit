@@ -4,7 +4,7 @@ import NoteList from 'Constants/noteList.js';
 import ScaleList from 'Constants/scaleList.js';
 import NotesSetup  from 'Home/notes';
 
-import { faMusic, faPlay, faPause, faMarker } from '@fortawesome/free-solid-svg-icons'
+import { faMusic, faPlay, faPause, faMarker, faSortAmountUp, faRandom } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import './style.scss';
@@ -24,6 +24,7 @@ class FingerPlacement extends Component {
 			noise_filter: "name",
 			notes_pool: [...NoteList],
 			progress_required: 50,
+			exercise_type: "random"
 		});
 		
 		state_object.key_signature_value = parseInt(state_object.key_signature_value, 10);
@@ -113,6 +114,12 @@ class FingerPlacement extends Component {
 		if (return_bool == false){return_bool = !_.isEqual(nextPropsEdit, currentPropsEdit)};
 
 		return return_bool
+	}
+
+	setExcerciseType = (value)=>{
+		this.setStateAndSave({
+			exercise_type: value,
+		}, this.changeModePlayNotes)
 	}
 
 	setKeySignature = (value, name)=>{
@@ -472,6 +479,15 @@ class FingerPlacement extends Component {
 			</div>
 
 			<div className="top_menu">
+
+				<div className="button" onClick={()=>{this.setExcerciseType("random")}} style={{backgroundColor: this.state.exercise_type == "random" ? "#fc3" : "#333"}}>
+					<FontAwesomeIcon icon={faRandom}/>
+				</div>
+
+				<div className="button" onClick={()=>{this.setExcerciseType("scales")}} style={{backgroundColor: this.state.exercise_type == "scales" ? "#fc3" : "#333"}}>
+					<FontAwesomeIcon icon={faSortAmountUp}/>
+				</div>
+
 				<div className="button" onClick={this.state.notes_edit ? this.changeModePlayNotes : this.changeModeEditNotes}>
 					<FontAwesomeIcon icon={this.state.notes_edit == true ? faMusic : faMarker}/>
 				</div>

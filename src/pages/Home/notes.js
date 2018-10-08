@@ -65,18 +65,43 @@ export const generateNote = function(count = 0, callback){
     let notes_pool = this.state.notes_pool.filter(p=>(p.active == true));
     if (notes_pool.length > 1){
         while(count > 0){
-            let random_seed = Math.floor(Math.random()*(notes_pool.length));
-            if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
-        
-            if (!_.isNil(this.previous_note)){
-                while(random_seed == this.previous_note){
-                    random_seed = Math.floor(Math.random()*(notes_pool.length));
-                    if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
+            if (this.state.exercise_type == "random"){
+                let random_seed = Math.floor(Math.random()*(notes_pool.length));
+                if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
+            
+                if (!_.isNil(this.previous_note)){
+                    while(random_seed == this.previous_note){
+                        random_seed = Math.floor(Math.random()*(notes_pool.length));
+                        if (random_seed == notes_pool.length){random_seed = notes_pool.length - 1};
+                    }
                 }
+                this.previous_note = random_seed;
+                notes_list.push( notes_pool[random_seed] )
+            } else if (this.state.exercise_type == "scales") {
+                let seed_index = 0;
+                if (_.isNil(this.scale_direction)){this.scale_direction = 1};
+                if (!_.isEmptyArray(notes_list)){
+                    let note_last = notes_list[notes_list.length - 1]
+
+                    notes_pool.forEach((item, index)=>{
+                        if (item.name == note_last.name && item.octave == note_last.octave){
+                            seed_index = index + this.scale_direction
+                        }
+                    })
+                }
+
+                if (seed_index > notes_pool.length - 1){
+                    seed_index = notes_pool.length - 1;
+                    this.scale_direction = -1;
+                }
+
+                if (seed_index < 0){
+                    seed_index = 0;
+                    this.scale_direction = 1;
+                }
+                notes_list.push( notes_pool[seed_index] )
             }
-    
-            this.previous_note = random_seed;
-            notes_list.push( notes_pool[random_seed] )
+            
             count--
         }
     }
