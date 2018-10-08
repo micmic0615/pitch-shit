@@ -173,7 +173,6 @@ Application.prototype.start = function(){
 }
 
 Application.prototype.listen = function(note){
-	console.log(note)
 	if (note.name == this.currentNote.name && note.octave == this.currentNote.octave){
 		this.correctPositive++;
 		if (this.correct < this.correctMax){

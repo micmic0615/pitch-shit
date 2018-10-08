@@ -191,7 +191,7 @@ export const readNote = function(note, onCorrect, onMistake){
     
     if (is_sharp){
         required_perfect = required_note.perfect[1];
-        if (this.state.key_signature_name <= 7){
+        if (this.state.key_signature_value <= 7){
             switch(required_name){
                 case "E": required_name = "F"; break;
                 case "B": required_name = "C"; break;

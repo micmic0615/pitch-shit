@@ -50,6 +50,7 @@ class FingerPlacement extends Component {
 		this.clock = 0;
 
 		this.note_current = {
+			rating: [],
 			correct: 0,
 			correct_max: 10,
 			
@@ -324,7 +325,7 @@ class FingerPlacement extends Component {
 		let note_name = note.name;
 
 		if (sharp_list.includes(note_name)){
-			if (this.state.key_signature_name <= 7){
+			if (this.state.key_signature_value <= 7){
 				switch(note_name){
 					case "E": note_name = "F"; break;
 					case "B": note_name = "C"; break;
