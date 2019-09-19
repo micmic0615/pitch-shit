@@ -161,21 +161,10 @@ class FingerPlacement extends Component {
 	}
 
 	unpause = ()=>{
+		AudioContext.resume();
 		this.setState({running: 1}, ()=>{
 			if (this.state.progress_current >= this.state.progress_required){
-				this.setState({notes_list: []}, ()=>{
-					this.generateNote(this.state.progress_required, ()=>{
-						this.clock = 0;
-						this.combo.max = 0;
-						this.setState({
-							notes_index: 0, 								
-							progress_current: 0,
-							score: 0,
-							combo: 0,
-							errors: 0
-						})
-					})
-				})				
+				window.location.reload();		
 			}
 		})
 	}

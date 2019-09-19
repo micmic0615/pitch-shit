@@ -35,7 +35,8 @@ self.scriptProcessor.connect(self.audioContext.destination)
 self.scriptProcessor.addEventListener('audioprocess',function(event){const frequency=self.pitchDetector.do(event.inputBuffer.getChannelData(0))
 if(frequency&&self.onNoteDetected){const note=self.getNote(frequency)
 self.onNoteDetected({name:self.noteStrings[note%12],value:note,cents:self.getCents(frequency,note),octave:parseInt(note/12)-1,frequency:frequency})}})}).catch(function(error){alert(error.name+': '+error.message)})}
-Tuner.prototype.init=function(){this.audioContext=new window.AudioContext()
+Tuner.prototype.init=function(){this.audioContext=new window.AudioContext();
+window.AudioContext = this.audioContext
 this.analyser=this.audioContext.createAnalyser()
 this.scriptProcessor=this.audioContext.createScriptProcessor(this.bufferSize,1,1)
 const self=this
