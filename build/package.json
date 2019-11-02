@@ -26,7 +26,7 @@
     "lodash": "^4.17.10",
     "module-alias": "^2.1.0",
     "moment": "^2.20.1",
-    "mongoose": "^4.10.8",
+    "mongoose": "^5.7.7",
     "node-cron": "^1.2.1",
     "node-slack-upload": "^1.2.1",
     "passport": "^0.4.0",
